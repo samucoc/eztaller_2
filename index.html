@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Samuel Silva Díaz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: columna editorial de 1120px; hero a dos columnas (tesis + panel de estado), luego secciones con etiqueta lateral izquierda */
+:root {
+  --bg: #f4f7fa;
+  --surface: #ffffff;
+  --ink: #1e2a36;
+  --muted: #5d6b7a;
+  --line: #dbe3ea;
+  --sky: #0b8fd0;
+  --sky-soft: #e1f2fb;
+  --sky-ink: #075f8c;
+  --slate: #2b3846;
+  --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12181f; --surface: #19222c; --ink: #e4eaf0; --muted: #94a3b2; --line: #2a3644;
+    --sky: #4cc0f2; --sky-soft: #15303f; --sky-ink: #8fd8f8; --slate: #c9d4de;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12181f; --surface: #19222c; --ink: #e4eaf0; --muted: #94a3b2; --line: #2a3644;
+  --sky: #4cc0f2; --sky-soft: #15303f; --sky-ink: #8fd8f8; --slate: #c9d4de;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 1rem/1.6 var(--f-body);
+  padding-inline: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1120px; margin-inline: auto; }
+a { color: var(--sky-ink); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+
+/* Nav */
+.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  margin-inline: -20px; padding: 14px 20px;
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.mark { font: 700 1rem/1 var(--f-display); font-stretch: 112%; letter-spacing: .02em; color: var(--ink); text-decoration: none; }
+.mark span { color: var(--sky); }
+.nav ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; flex-wrap: wrap; }
+.nav ul a { color: var(--muted); text-decoration: none; font-size: .9rem; }
+.nav ul a:hover { color: var(--ink); }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 56px; padding-block: 72px 64px; align-items: end; }
+.eyebrow { font: 500 .78rem/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--sky-ink); }
+.hero h1 {
+  font-size: clamp(2.6rem, 6.4vw, 5.2rem); font-weight: 800; font-stretch: 78%;
+  line-height: .95; letter-spacing: -.01em; margin-block: 18px 22px; text-transform: uppercase;
+}
+.hero h1 em { font-style: normal; color: var(--sky); display: block; }
+.roles { font: 500 1.1rem/1.4 var(--f-display); font-stretch: 105%; color: var(--slate); margin-bottom: 18px; }
+.lede { color: var(--muted); max-width: 60ch; font-size: 1.04rem; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.btn {
+  font: 600 .95rem/1 var(--f-body); padding: 14px 20px; border-radius: 6px; text-decoration: none;
+  border: 1px solid var(--line); color: var(--ink); background: var(--surface); cursor: pointer;
+}
+.btn.primary { background: var(--sky); border-color: var(--sky); color: var(--bg); }
+.btn:hover { border-color: var(--sky); }
+
+.status {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  font: 400 .84rem/1.7 var(--f-mono); color: var(--muted); overflow: hidden;
+}
+.status header { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .76rem; }
+.status header i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); display: inline-block; }
+.status header i:first-child { background: var(--sky); }
+.status pre { margin: 0; padding: 16px; white-space: pre-wrap; font: inherit; }
+.status b { color: var(--sky-ink); font-weight: 500; }
+.status .k { color: var(--ink); }
+
+/* Cifras */
+.figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--line); }
+.figures div { padding: 26px 20px 24px 0; }
+.figures div + div { padding-left: 20px; border-left: 1px solid var(--line); }
+.figures strong { display: block; font: 800 2.4rem/1 var(--f-display); font-stretch: 80%; color: var(--ink); font-variant-numeric: tabular-nums; }
+.figures strong sup { color: var(--sky); font-size: .55em; vertical-align: top; margin-left: 2px; }
+.figures span { display: block; margin-top: 8px; color: var(--muted); font-size: .88rem; line-height: 1.4; }
+
+/* Secciones */
+section.block { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 40px; padding-block: 72px; border-bottom: 1px solid var(--line); }
+.label { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 80px); align-self: start; }
+.label h2 { font-size: 1.5rem; font-weight: 700; font-stretch: 90%; text-transform: uppercase; letter-spacing: .01em; }
+.label p { color: var(--muted); font-size: .88rem; margin-top: 8px; }
+
+/* Stack */
+.skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 48px; }
+.skills h3 { font: 500 .76rem/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.meter { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.meter li { display: grid; grid-template-columns: minmax(0, 1fr) 88px; align-items: center; gap: 12px; font-size: .95rem; }
+.bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+.bar i { height: 6px; border-radius: 1px; background: var(--line); }
+.bar i.on { background: var(--sky); }
+.meter small { display: block; color: var(--muted); font-size: .78rem; line-height: 1.2; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { font: 400 .82rem/1 var(--f-mono); padding: 7px 10px; border-radius: 4px; background: var(--sky-soft); color: var(--sky-ink); }
+.tag.grey { background: transparent; border: 1px solid var(--line); color: var(--slate); }
+
+/* Experiencia */
+.jobs { display: grid; gap: 0; }
+.job { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 24px; padding-block: 26px; border-top: 1px solid var(--line); }
+.job:first-child { border-top: 0; padding-top: 0; }
+.when { font: 400 .8rem/1.5 var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.when .now { display: inline-block; margin-top: 6px; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--sky-ink); background: var(--sky-soft); padding: 3px 7px; border-radius: 3px; }
+.job h3 { font-size: 1.2rem; font-weight: 700; font-stretch: 95%; }
+.org { color: var(--sky-ink); font-weight: 500; font-size: .95rem; margin-top: 2px; }
+.org span { color: var(--muted); font-weight: 400; }
+.job p.desc { color: var(--muted); margin-top: 10px; max-width: 68ch; }
+.job ul { margin: 10px 0 0; padding-left: 18px; color: var(--ink); max-width: 68ch; }
+.job ul li { margin-top: 4px; }
+.job ul li::marker { color: var(--sky); }
+.job .tags { margin-top: 14px; }
+.more { margin-top: 8px; }
+.more summary { cursor: pointer; font: 500 .9rem/1 var(--f-mono); color: var(--sky-ink); padding-block: 14px; list-style: none; }
+.more summary::-webkit-details-marker { display: none; }
+.more summary::before { content: "+ "; }
+.more[open] summary::before { content: "− "; }
+
+/* Proyectos */
+.projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.project { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+.project.lead { grid-column: 1 / -1; border-color: var(--sky); }
+.project h3 { font-size: 1.12rem; font-weight: 700; font-stretch: 95%; }
+.project p { color: var(--muted); font-size: .95rem; }
+.project .tags { margin-top: auto; padding-top: 6px; }
+
+/* Formación */
+.edu { display: grid; gap: 14px; margin-bottom: 36px; }
+.edu div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 16px; }
+.edu strong { font-family: var(--f-display); font-size: 1.05rem; }
+.edu span { color: var(--muted); font-size: .92rem; display: block; }
+.certs { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 40px; }
+.certs li { break-inside: avoid; display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 10px; padding-block: 7px; border-top: 1px solid var(--line); font-size: .9rem; }
+.certs time { font: 500 .8rem/1.6 var(--f-mono); color: var(--sky-ink); }
+.certs em { font-style: normal; color: var(--muted); }
+
+/* Contacto */
+.contact { padding-block: 80px 56px; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+.contact h2 { font-size: clamp(2rem, 4.6vw, 3.4rem); font-weight: 800; font-stretch: 80%; text-transform: uppercase; line-height: 1; }
+.contact h2 em { font-style: normal; color: var(--sky); }
+.contact p { color: var(--muted); margin-top: 16px; max-width: 48ch; }
+.channels { display: grid; gap: 10px; }
+.channel { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.channel small { display: block; font: 500 .7rem/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.channel a, .channel span.v { font: 500 1rem/1.3 var(--f-mono); color: var(--ink); text-decoration: none; user-select: all; word-break: break-all; }
+.copy { font: 500 .78rem/1 var(--f-mono); padding: 8px 10px; border-radius: 4px; border: 1px solid var(--line); background: transparent; color: var(--sky-ink); cursor: pointer; flex-shrink: 0; }
+.copy:hover { border-color: var(--sky); }
+footer { border-top: 1px solid var(--line); padding-block: 22px 32px; color: var(--muted); font: 400 .8rem/1.5 var(--f-mono); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero > * { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
+  .hero > *:nth-child(2) { animation-delay: .12s; }
+  @keyframes rise { from { transform: translateY(12px); } to { transform: none; } }
+}
+
+@media (max-width: 900px) {
+  .hero, .contact { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  section.block { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 56px; }
+  .label { position: static; }
+  .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .figures div:nth-child(3) { padding-left: 0; border-left: 0; }
+  .figures div:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 640px) {
+  body { padding-inline: 16px; }
+  .nav { margin-inline: -16px; padding-inline: 16px; }
+  .nav ul { gap: 14px; }
+  .hero { padding-block: 44px 40px; }
+  .skills, .projects { grid-template-columns: minmax(0, 1fr); }
+  .job { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .certs { columns: 1; }
+  .edu div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .figures strong { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Principal">
+  <div class="wrap">
+    <a class="mark" href="#inicio">SFSD<span>.</span></a>
+    <ul>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#experiencia">Experiencia</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#formacion">Formación</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="wrap" id="inicio">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Santiago, Chile · +15 años en desarrollo web</p>
+      <h1>Samuel Felipe <em>Silva Díaz</em></h1>
+      <p class="roles">Líder Técnico · Desarrollador Web Senior · Arquitecto de Software</p>
+      <p class="lede">Diseño y entrego soluciones escalables para empresas privadas e instituciones públicas. Me especializo en modernizar sistemas legacy (Oracle Forms, .NET Framework) hacia microservicios, APIs REST y frontends en React, Vue y Angular, con pipelines CI/CD y despliegues en AWS, Azure y Google Cloud.</p>
+      <div class="cta">
+        <a class="btn primary" href="#contacto">Conversemos</a>
+        <a class="btn" href="#experiencia">Ver trayectoria</a>
+      </div>
+    </div>
+    <aside class="status" aria-label="Rol actual">
+      <header><i></i><i></i><i></i>&nbsp; estado.json</header>
+<pre>{
+  <span class="k">"rol"</span>: <b>"CTO"</b>,
+  <span class="k">"empresa"</span>: <b>"PenwinsDev"</b>,
+  <span class="k">"desde"</span>: "2026-08",
+  <span class="k">"también"</span>: <b>"Ing. de Software Senior @ Genesys (Grupo Falabella)"</b>,
+  <span class="k">"stack"</span>: ["Node.js", ".NET 10", "Golang", "React", "PostgreSQL"],
+  <span class="k">"modalidad"</span>: "remoto · Santiago"
+}</pre>
+    </aside>
+  </header>
+
+  <div class="figures" aria-label="Cifras">
+    <div><strong>15<sup>+</sup></strong><span>años diseñando y entregando software</span></div>
+    <div><strong>2.000<sup>+</sup></strong><span>usuarios activos en la plataforma GRHIN</span></div>
+    <div><strong>20<sup>+</sup></strong><span>módulos críticos migrados desde Oracle Forms</span></div>
+    <div><strong>−80<sup>%</sup></strong><span>errores en producción con testing y monitoreo continuo</span></div>
+  </div>
+
+  <section class="block" id="stack">
+    <div class="label"><h2>Stack</h2><p>Nivel según uso real en proyectos productivos.</p></div>
+    <div class="skills" id="skills"></div>
+  </section>
+
+  <section class="block" id="experiencia">
+    <div class="label"><h2>Experiencia</h2><p>Desde 2010, del sector público al retail.</p></div>
+    <div>
+      <div class="jobs" id="jobs"></div>
+      <details class="more">
+        <summary>Ver experiencia anterior (2010 – 2022)</summary>
+        <div class="jobs" id="jobs-old"></div>
+      </details>
+    </div>
+  </section>
+
+  <section class="block" id="proyectos">
+    <div class="label"><h2>Proyectos</h2><p>Sistemas construidos desde cero.</p></div>
+    <div class="projects" id="projects"></div>
+  </section>
+
+  <section class="block" id="formacion">
+    <div class="label"><h2>Formación</h2><p>Educación y certificaciones.</p></div>
+    <div>
+      <div class="edu">
+        <div><span>2006 – 2008</span><p><strong>Analista Programador</strong><span>INACAP</span></p></div>
+        <div><span>2001 – 2006</span><p><strong>Ingeniería en Informática Aplicada (cursada)</strong><span>Universidad de Valparaíso</span></p></div>
+      </div>
+      <ul class="certs" id="certs"></ul>
+      <p style="margin-top:28px;color:var(--muted);font-size:.92rem">Idiomas: español nativo · inglés técnico de lectura (intermedio).</p>
+    </div>
+  </section>
+
+  <section class="contact" id="contacto">
+    <div>
+      <h2>¿Un sistema legacy que <em>modernizar</em>?</h2>
+      <p>Disponible para liderazgo técnico, arquitectura de software e integración de plataformas. Escríbeme y conversemos sobre tu proyecto.</p>
+    </div>
+    <div class="channels">
+      <div class="channel">
+        <div><small>Correo</small><a href="mailto:samu.silva@gmail.com">samu.silva@gmail.com</a></div>
+        <button class="copy" type="button" data-copy="samu.silva@gmail.com">Copiar</button>
+      </div>
+      <div class="channel">
+        <div><small>Teléfono</small><span class="v">+56 9 7578 6353</span></div>
+        <button class="copy" type="button" data-copy="+56975786353">Copiar</button>
+      </div>
+      <div class="channel">
+        <div><small>Ubicación</small><span class="v">Santiago, Chile · remoto</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Samuel Felipe Silva Díaz · 2026</span>
+    <span>Scrum · Kanban · Jira</span>
+  </footer>
+</main>
+
+<script>
+const LV = { "Avanzado": 4, "Intermedio-Avanzado": 3, "Intermedio": 2, "Básico": 1 };
+const skills = [
+  ["Lenguajes", [["PHP","Avanzado"],["C#","Intermedio-Avanzado"],["JavaScript / TypeScript","Intermedio-Avanzado"],["Java","Intermedio"],["Golang","Básico"]]],
+  ["Back-end", [["CodeIgniter 4","Avanzado"],["Laravel","Intermedio"],["Node.js · NestJS · Express","Intermedio"],["ASP.NET Core / Razor Pages","Intermedio"],["Spring Boot","Intermedio"]]],
+  ["Front-end", [["React / Next.js","Avanzado"],["Vue.js","Intermedio"],["Angular","Básico"]]],
+  ["Bases de datos", [["MySQL","Avanzado"],["Oracle PL/SQL","Avanzado"],["SQL Server","Intermedio"],["PostgreSQL","Intermedio"],["MongoDB / CosmosDB","Intermedio"]]],
+];
+const tagGroups = [
+  ["DevOps y Cloud", ["Docker","GitHub Actions","GitLab CI/CD","Azure DevOps","AWS EC2","Google Cloud","Azure","Oracle Cloud"], ""],
+  ["UI y estilos", ["CSS3","Bootstrap","Tailwind CSS","Material UI","Figma"], "grey"],
+  ["Integraciones", ["REST APIs","Microservicios","Middleware","Integraciones de terceros","CI/CD"], "grey"],
+  ["Metodologías", ["Scrum","Kanban","Jira"], "grey"],
+];
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const tags = (list, cls = "") => `<div class="tags">${list.map(t => `<span class="tag ${cls}">${esc(t)}</span>`).join("")}</div>`;
+
+document.getElementById("skills").innerHTML =
+  skills.map(([h, items]) => `<div><h3>${h}</h3><ul class="meter">${items.map(([n, l]) =>
+    `<li><span>${esc(n)}<small>${l}</small></span><span class="bar" aria-label="${l}">${[1,2,3,4].map(i => `<i class="${i <= LV[l] ? "on" : ""}"></i>`).join("")}</span></li>`
+  ).join("")}</ul></div>`).join("") +
+  tagGroups.map(([h, list, cls]) => `<div><h3>${h}</h3>${tags(list, cls)}</div>`).join("");
+
+const jobs = [
+  { r: "CTO (Chief Technology Officer)", o: "PenwinsDev", p: "Chile · Remoto", d: "Ago 2026", e: null,
+    t: "Estrategia tecnológica, arquitectura y equipos de desarrollo para infraestructura de agua domiciliaria, logística y ERP a medida, integrando inteligencia artificial para automatizar procesos.",
+    b: ["Arquitecturas backend escalables y seguras con Node.js, Express y .NET.", "Administración y optimización de PostgreSQL y SQL Server.", "Definición de estándares técnicos, buenas prácticas y procesos de desarrollo.", "Liderazgo y coordinación de equipos multidisciplinarios."],
+    s: ["Node.js","Express",".NET 10","PostgreSQL","SQL Server"] },
+  { r: "Ingeniero de Software Senior", o: "Genesys (Grupo Falabella)", p: "Santiago", d: "Abr 2026", e: null,
+    t: "Evolución del portal Falabella Business Center con arquitectura de microfrontends, en la célula Cross, integrando React con servicios en Golang sobre Google Cloud.",
+    b: ["Componentes frontend escalables con React y Material UI.", "Integración con microservicios backend en Golang.", "Optimización del bundling (migración de Rspack a Webpack).", "Arquitectura distribuida y despliegue en GCP."],
+    s: ["Bun","Golang","React","Material UI","PostgreSQL","GCP"] },
+  { r: "Líder Técnico", o: "BL Corporations", p: "Huechuraba", d: "Nov 2025", e: "Mar 2026",
+    t: "Diseño y desarrollo de un middleware de integración para couriers internacionales, con trazabilidad completa de envíos aéreos, marítimos y terrestres.",
+    b: ["Arquitectura de microservicios para integración de couriers.", "APIs y servicios backend con Node.js y Express.", "Integración Cainiao ↔ Starken con Java Spring Boot.", "Gestión y optimización de PostgreSQL y SQL Server."],
+    s: ["Node.js 20","Spring Boot","PostgreSQL","SQL Server"] },
+  { r: "Digitalizador · Proyecto SIMPLE", o: "Ministerio de Vivienda y Urbanismo", p: "Chile", d: "Ago 2025", e: "Dic 2025",
+    t: "Traspaso y digitalización de flujos del MINVU a la plataforma SIMPLE de Gobierno Digital, asegurando continuidad operativa.",
+    s: ["Bizagi","Azure DevOps"] },
+  { r: "FullStack Engineer", o: "Kibernum", p: "Chile", d: "Sep 2025", e: "Oct 2025",
+    t: "Actualización tecnológica de la Corredora de Bolsa de BancoEstado, con integración en canales web y app móvil.",
+    s: ["NestJS","Fastify","MongoDB","Redis"] },
+  { r: "Líder Técnico · Arquitecto · DevOps", o: "GRHIN SPA", p: "Socio fundador", d: "Ago 2024", e: "Jul 2025",
+    t: "Plataforma integral de gestión de RR.HH. para instituciones educativas: arquitectura, desarrollo full stack y DevOps.",
+    b: ["Arquitectura modular con pipelines CI/CD automatizados.", "Despliegues con GitHub Actions sobre AWS EC2.", "80% menos errores en producción con testing y monitoreo continuo.", "Más de 2.000 usuarios activos."],
+    s: ["PHP 8.3","CodeIgniter 4","Next.js","NestJS","MySQL","AWS EC2"] },
+  { r: "Desarrollador Web Senior · Integración Oracle", o: "Prosys SPA", p: "Proyecto TIME – HDI", d: "Ago 2024", e: "Jul 2025",
+    t: "Migración de lógica de negocio desde Oracle Forms a microservicios, sobre procedimientos almacenados en Oracle 10g/11g.",
+    b: ["Más de 20 módulos críticos migrados desde Oracle Forms.", "40% menos tiempo de ejecución en procedimientos complejos.", "Arquitectura de integración con microservicios reutilizables."],
+    s: ["Oracle","PL/SQL","C# Razor","REST","Azure DevOps"] },
+  { r: "Desarrollador Web Senior y Líder Técnico", o: "Actis Limitada", p: "Sector público", d: "Jun 2022", e: "Jun 2024",
+    t: "Proyectos para MINVU, MOP, MIDESO, MTT, SML, Bienes Nacionales y Senama, coordinando equipos técnicos.",
+    b: ["Liderazgo del sistema SIGEC del MINVU, con mejor trazabilidad de contratos.", "Migración de sistemas legacy a APIs REST mantenibles.", "Sistema de aprendizaje interactivo para cuidadores de Senama."],
+    s: [".NET 6","Java","Laravel","SQL Server","Oracle","Vue","React"] },
+];
+const old = [
+  { r: "Desarrollador Web Senior Freelance", o: "Gescol Consultores", p: "Remoto", d: "Abr 2014", e: "Dic 2024",
+    t: "Plataformas de gestión educativa y social. Sistema educativo modular usado por más de 10 establecimientos, reportes PDF automatizados con cobranza y optimización de servidores Debian.",
+    s: ["CodeIgniter","Laravel","WordPress","MySQL","Next.js"] },
+  { r: "Desarrollador Back-End", o: "Genkai Studio", p: "Remoto", d: "Mar 2023", e: "Mar 2024",
+    t: "Actualización de la API ExpoGames 2023 y Manual de Buenas Prácticas de Mutual de Seguridad.", s: ["PHP",".NET","MySQL","React"] },
+  { r: "Consultor .NET", o: "Apiux SpA", p: "Chile", d: "May 2021", e: "May 2022",
+    t: "Portal IoT y API Conexiones en Línea para la SMA con ASP.NET Core, Azure Functions, CosmosDB y SQL Server.", s: [".NET 6","Azure Functions","CosmosDB","Docker"] },
+  { r: "Desarrollador PHP Externo", o: "ACTIS Limitada", p: "Chile", d: "Nov 2020", e: "Abr 2021",
+    t: "Sistemas para la plataforma Oferta y Habitabilidad de MIDEPLAN.", s: ["Laravel","Oracle","MySQL"] },
+  { r: "Desarrollador Web", o: "Sistemas Expertos e Ingeniería de Software", p: "Chile", d: "Feb 2019", e: "Oct 2020",
+    t: "Sistemas para SSVSA y hospitales de la red asistencial pública.", s: ["PHP","PostgreSQL","jQuery"] },
+  { r: "Desarrollador de Software Senior (.NET)", o: "Prevsis", p: "Chile", d: "Sep 2018", e: "Feb 2019",
+    t: "Módulos de Auditoría, Investigación de Incidentes y Dashboard del sistema SGR4.", s: ["VB.NET","SQL Server"] },
+  { r: "Desarrollador Web", o: "Grupo DTG", p: "Chile", d: "Feb 2018", e: "Ago 2018",
+    t: "Sitio administrativo Energy y app de escritorio con WebSocket entre equipos Transbank y sistema web.", s: ["PHP",".NET 4.5","MySQL"] },
+  { r: "Jefe de Departamento de TI", o: "Inversiones Yonley Ltda", p: "Chile", d: "Ene 2013", e: "Feb 2018",
+    t: "Gestión de proyectos de TI y ERP a medida (ventas, cobranza, bodegas, tesorería, finanzas), migración a Laravel 5.3 y apps de rastreo GPS.", s: ["CakePHP","Laravel","Java","MySQL"] },
+  { r: "Desarrollador Web", o: "Mercator S.A.", p: "Chile", d: "May 2010", e: "Oct 2011",
+    t: "Migración del sitio MiPyme del SII, estadísticas para VTR y sistemas para Cinemark Chile y Argentina.", s: ["PHP","MySQL","jQuery"] },
+];
+const jobHTML = j => `<article class="job">
+  <div class="when">${j.d} —<br>${j.e ?? "Actualidad"}${j.e ? "" : `<br><span class="now">Actual</span>`}</div>
+  <div>
+    <h3>${esc(j.r)}</h3>
+    <p class="org">${esc(j.o)} <span>· ${esc(j.p)}</span></p>
+    <p class="desc">${esc(j.t)}</p>
+    ${j.b ? `<ul>${j.b.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+    ${tags(j.s, "grey")}
+  </div>
+</article>`;
+document.getElementById("jobs").innerHTML = jobs.map(jobHTML).join("");
+document.getElementById("jobs-old").innerHTML = old.map(jobHTML).join("");
+
+const projects = [
+  ["Sistema de RR.HH. para establecimientos educacionales · GRHIN", "Gestión de trabajadores, liquidaciones de sueldo, repositorio de documentos legales, solicitudes internas, comunicaciones y registro de casos conforme a la Ley Karin. Arquitectura modular con CI/CD y más de 2.000 usuarios activos.", ["CodeIgniter 4","Next.js","Node.js","MySQL","GitHub Actions","AWS EC2"]],
+  ["Middleware de integración de couriers", "Homologación de servicios logísticos entre couriers asiáticos y latinoamericanos, con trazabilidad de órdenes, seguimiento y estados de entrega.", ["Node.js","PostgreSQL","SQL Server"]],
+  ["ERP a medida · Inversiones Yonley", "ERP completo para una empresa de múltiples rubros: cobranza, compras, bodega, RR.HH., ventas, combustibles, tesorería, finanzas y más, con interfaz dinámica en xajax.", ["PHP","xajax","MySQL"]],
+  ["Kanban de gestión de proyectos", "Organización de proyectos y tareas en equipo con colaboración en tiempo real, asignación y seguimiento de avance.", ["Node.js","React","MySQL"]],
+  ["Sistema POS", "Punto de venta desde cero: productos, ventas, reportes e inventario en tiempo real, personalizable y escalable.", ["PHP 8","MySQL","Bootstrap"]],
+  ["GPS para flotas", "Rastreo en tiempo real con visualización de rutas, estados y alertas por vehículo para optimizar la logística.", ["CakePHP","MySQL","Bootstrap"]],
+];
+document.getElementById("projects").innerHTML = projects.map(([h, p, s], i) =>
+  `<article class="project${i === 0 ? " lead" : ""}"><h3>${esc(h)}</h3><p>${esc(p)}</p>${tags(s, i === 0 ? "" : "grey")}</article>`).join("");
+
+const certs = [
+  ["2026","React y TypeScript: La Guía Completa","Udemy"],
+  ["2026","Spring Framework 6 & Spring Boot 3","Udemy"],
+  ["2025","GitHub Copilot para Desarrolladores","IT Academy Kibernum"],
+  ["2025","SIMPLE DAY y Capacitación SIMPLE","Gobierno Digital"],
+  ["2024",".NET 6 & Angular 14: Sistema de Ventas","Udemy"],
+  ["2023","Scrum Foundation Professional (SFPC)","CertiProf"],
+  ["2023","Lifelong Learning Certificate","CertiProf"],
+  ["2023","Patrones de Diseño y SOLID en C# .NET","Udemy"],
+  ["2022","Máster en Frameworks JavaScript","Udemy"],
+  ["2022","AZ-900 Azure Fundamentals","Udemy"],
+  ["2022","Scrum Master","Udemy"],
+  ["2021",".NET Core C# EF y MVC","Udemy"],
+  ["2021","Web APIs RESTful con ASP.NET Core 6","Udemy"],
+];
+document.getElementById("certs").innerHTML = certs.map(([y, n, o]) =>
+  `<li><time>${y}</time><span>${esc(n)} <em>· ${esc(o)}</em></span></li>`).join("");
+
+document.querySelectorAll(".copy").forEach(btn => btn.addEventListener("click", () => {
+  const done = ok => { btn.textContent = ok ? "Copiado" : "Selecciona"; setTimeout(() => btn.textContent = "Copiar", 1600); };
+  try {
+    navigator.clipboard.writeText(btn.dataset.copy).then(() => done(true), () => done(false));
+  } catch { done(false); }
+}));
+</script>
+</body>
+</html>
